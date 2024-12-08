@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
+import 'package:medicine_reminder/feature/homepage/viewmodel/home_viewmodel.dart';
 import 'package:medicine_reminder/feature/register/viewmodel/register_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
+        ChangeNotifierProvider(create: (_) => HomeViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

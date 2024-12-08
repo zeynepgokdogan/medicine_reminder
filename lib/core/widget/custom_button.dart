@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final void Function()? onPressed;
@@ -11,7 +12,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.color = Colors.blue,
+    this.color = AppColors.primaryColor,
     this.width = 400,
     this.height = 58,
   });
@@ -28,7 +29,7 @@ class CustomButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(60),
           ),
         ),
         child: Text(

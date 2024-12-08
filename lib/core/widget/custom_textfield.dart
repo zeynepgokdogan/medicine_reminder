@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -6,31 +7,18 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final Color color;
   final TextInputType keyboardType;
+  final String? Function(String?)?
+      validator; // Dışarıdan alınan validator fonksiyonu
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.color = Colors.blue,
+    this.color = AppColors.primaryColor,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
+    this.validator, // Opsiyonel validator parametresi
   });
-
-  String? _validator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter $hintText';
-    }
-
-    if (hintText == 'Enter email' && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-      return 'Please enter a valid email';
-    }
-
-    if (hintText.contains('password') && value.length < 6) {
-      return 'Password must be at least 6 characters';
-    }
-
-    return null;  
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,25 +26,25 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade50, // Daha açık ton
-          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(60.0),
           border: Border.all(
             color: color.withOpacity(0.3),
-            width: 3.0, // Border kalınlığı ayarlandı
+            width: 3.0,
           ),
         ),
         child: TextFormField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          validator: _validator,
+          validator: validator, // Kullanıcının gönderdiği doğrulama fonksiyonu
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(color: Colors.black45),
             prefixIcon: _getPrefixIcon(),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(60.0),
               borderSide: BorderSide.none,
             ),
             contentPadding: const EdgeInsets.all(16.0),
@@ -67,11 +55,11 @@ class CustomTextField extends StatelessWidget {
   }
 
   Icon? _getPrefixIcon() {
-    if (hintText.contains('email')) {
+    if (hintText.contains('E-posta')) {
       return Icon(Icons.email_outlined, color: color);
-    } else if (hintText.contains('password')) {
+    } else if (hintText.contains('Şifre')) {
       return Icon(Icons.lock_outline, color: color);
-    } else if (hintText.contains('name')) {
+    } else if (hintText.contains('İsim') || hintText.contains('isim')) {
       return Icon(Icons.person_outline, color: color);
     }
     return null;

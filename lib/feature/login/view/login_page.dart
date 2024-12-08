@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/core/widget/custom_button.dart';
 import 'package:medicine_reminder/core/widget/custom_textfield.dart';
 import 'package:medicine_reminder/feature/login/service/login_service.dart';
@@ -12,12 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isObsecure = true;
-  void changeObsecure() {
-    setState(() {
-      isObsecure = !isObsecure;
-    });
-  }
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController mailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -29,105 +25,81 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: size.height * 0.1),
-    
-            
-    
-              SizedBox(height: size.height * 0.001),
-    
-              // LOGIN TEXT
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Medicine Reminder',
-                    style:
-                        Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 40,
-                            ),
-                    textAlign: TextAlign.center,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 190),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.cover,
                   ),
-                
-                ],
-              ),
-              SizedBox(height: size.height * 0.04),
-    
-              CustomTextField(
-                  controller: mailController, hintText: 'Enter email'),
-    
-      
-    
-              CustomTextField(
-                controller: passwordController,
-                hintText: 'Enter password',
-                obscureText: true,
-              ),
-    
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      // FORGOT PASSWORD SAYFASINA YONLENDIR
-                    },
-                    child: const  Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color:Colors.blue,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-    
-              SizedBox(height: size.height * 0.01),
-    
-              // LOGIN BUTTON
-              CustomButton(
+                ),
+                const SizedBox(height: 50),
+                CustomTextField(
+                  controller: mailController,
+                  hintText: 'E-posta',
+                ),
+                CustomTextField(
+                  controller: passwordController,
+                  hintText: 'Şifre',
+                  obscureText: true,
+                ),
+                SizedBox(height: size.height * 0.01),
+                CustomButton(
                   onPressed: () {
-                    logIn(mailController, passwordController, context);
-                  },
-                  text: 'Log In'),
-    
-              SizedBox(height: size.height * 0.02),
-    
-              // ROW (SIGN UP, LOGIN WITH GOOGLE)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Already have an account? ',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  RegisterPage()),
+                    if (_formKey.currentState!.validate()) {
+                      logIn(mailController, passwordController, context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Lütfen formdaki hataları düzeltin.',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
                       );
-                    },
-                    child: const Text(
-                      'Sign Up',
+                    }
+                  },
+                  text: 'Giriş Yap',
+                ),
+                SizedBox(height: size.height * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Hesabınız yok mu? ',
                       style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                        fontSize: 14,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Kaydol',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

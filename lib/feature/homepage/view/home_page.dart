@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:medicine_reminder/feature/login/view/login_page.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
+import 'package:medicine_reminder/feature/homepage/viewmodel/home_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,40 +12,61 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _signOut() {
-    // Çıkış yapma işlemini burada gerçekleştir
-    // Örneğin, Firebase Auth kullanıyorsanız:
-    // await FirebaseAuth.instance.signOut();
-
-    // Login sayfasına yönlendirme (rota kullanmadan)
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
+  @override
+  void initState() {
+    super.initState();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userId != null) {
+        Provider.of<HomeViewmodel>(context, listen: false)
+            .fetchHomeModel(userId);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<HomeViewmodel>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.green,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Bir önceki sayfaya geri dön
+            Navigator.pop(context);
           },
         ),
         title: const Text("Home Page"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout), // Çıkış yap ikonu
-            onPressed: _signOut, // Çıkış yapma fonksiyonu çağrılır
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              viewModel.signOut(context);
+            },
           ),
         ],
       ),
       body: Center(
-        child: const Text("Home Page Content"),
+        child: Consumer<HomeViewmodel>(
+          builder: (context, viewModel, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  viewModel.name != null
+                      ? 'Welcome ${viewModel.name}. Your journey starts here!'
+                      : 'Welcome, your journey starts here!',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 }
-

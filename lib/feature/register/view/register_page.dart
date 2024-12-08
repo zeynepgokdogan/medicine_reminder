@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/core/widget/custom_button.dart';
 import 'package:medicine_reminder/core/widget/custom_textfield.dart';
 import 'package:medicine_reminder/feature/login/view/login_page.dart';
@@ -28,12 +29,13 @@ class RegisterPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 100),
                   Text(
-                    'Sign Up',
+                    'Kayıt Ol',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 40,
+                          color: AppColors.secondaryColor,
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -45,20 +47,19 @@ class RegisterPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   CustomTextField(
-                      controller: _nameController, hintText: 'Enter name'),
+                      controller: _nameController, hintText: 'İsim'),
                   CustomTextField(
-                      controller: _surnameController,
-                      hintText: 'Enter surname'),
+                      controller: _surnameController, hintText: 'Soyisim'),
                   CustomTextField(
-                      controller: _emailController, hintText: 'Enter email'),
+                      controller: _emailController, hintText: 'E-posta'),
                   CustomTextField(
                     controller: _passwordController,
-                    hintText: 'Enter password',
+                    hintText: 'Şifre',
                     obscureText: true,
                   ),
                   CustomTextField(
                     controller: _confirmPasswordController,
-                    hintText: 'Confirm password',
+                    hintText: 'Şifre',
                     obscureText: true,
                   ),
                   const SizedBox(height: 24),
@@ -81,7 +82,7 @@ class RegisterPage extends StatelessWidget {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
-                                        "User created successfully!",
+                                        "Kullanıcı başarıyla oluşturuldu!",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       backgroundColor: Colors.green,
@@ -93,7 +94,7 @@ class RegisterPage extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    "Passwords do not match!",
+                                    "Şifreler eşleşmiyor!",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   backgroundColor: Colors.red,
@@ -101,14 +102,14 @@ class RegisterPage extends StatelessWidget {
                               );
                             }
                           },
-                          text: "Create Account",
+                          text: "Hesap Oluştur",
                         ),
                   SizedBox(height: size.height * 0.02),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Already have an account? ',
+                        'Hesabınız Var Mı? ',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -123,9 +124,9 @@ class RegisterPage extends StatelessWidget {
                           );
                         },
                         child: const Text(
-                          'Sign In',
+                          'Giriş Yap',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: AppColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

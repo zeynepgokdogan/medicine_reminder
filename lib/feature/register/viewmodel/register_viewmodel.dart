@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../model/user_model.dart';
-import '../service/auth_service.dart';
+import '../service/register_service.dart';
 
 class RegisterViewModel extends ChangeNotifier {
-  final AuthService _authService = AuthService();
+  final RegisterService _authService = RegisterService();
   bool _isLoading = false;
   String? _errorMessage;
   String? _userId;

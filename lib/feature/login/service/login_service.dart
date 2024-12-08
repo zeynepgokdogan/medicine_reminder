@@ -1,8 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/feature/homepage/view/home_page.dart';
 
 void logIn(
   TextEditingController mailController,
@@ -17,49 +15,35 @@ void logIn(
       password: passwordController.text.trim(),
     );
 
-    // Giriş başarılı, UID alınıyor
-    final String? userId = userCredential.user?.uid;
-    debugPrint('Giriş yapan kullanıcı UID: $userId');
-
-    // Kullanıcıya başarılı giriş mesajı gösteriliyor
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          "Başarıyla giriş yapıldı!",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.green,
-      ),
+    // Başarılı giriş sonrası ana sayfaya yönlendirme
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
     );
 
-    // UID ile başka işlemler yapabilirsiniz, örneğin Firestore'dan veri çekmek
-    if (userId != null) {
-      // Örnek: Firestore'dan veri çekme
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
-      if (userDoc.exists) {
-        debugPrint('Kullanıcı bilgisi: ${userDoc.data()}');
-      } else {
-        debugPrint('Kullanıcı bilgisi bulunamadı.');
-      }
-    }
+    // UID'yi konsola yazdır
+    debugPrint('Giriş yapan kullanıcı UID: ${userCredential.user?.uid}');
   } on FirebaseAuthException catch (e) {
-    // Firebase özel hatalarını işleyin
+    debugPrint('Firebase Hata Kodu: ${e.code}');
+
+    // Firebase hatalarına uygun Türkçe mesajlar
     String errorMessage;
-    switch (e.code) {
-      case 'user-not-found':
-        errorMessage = "Kullanıcı bulunamadı.";
-        break;
-      case 'wrong-password':
-        errorMessage = "Yanlış şifre.";
-        break;
-      default:
-        errorMessage = "Bir hata oluştu. Lütfen tekrar deneyin.";
+    if (e.code == 'user-not-found') {
+      errorMessage = "Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'wrong-password') {
+      errorMessage = "Girdiğiniz şifre hatalı. Lütfen tekrar deneyin.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'invalid-email') {
+      errorMessage = "Geçersiz bir e-posta adresi girdiniz.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'user-disabled') {
+      errorMessage = "Bu kullanıcı hesabı devre dışı bırakılmış.";
+    } else {
+      errorMessage = "Kullanıcı bulunamadı.";
     }
 
-    // Hata mesajı gösteriliyor
+    // Hata mesajını kullanıcıya göster
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -70,12 +54,12 @@ void logIn(
       ),
     );
   } catch (e) {
-    // Genel hataları yakalayın
+    // Genel hatalar
     debugPrint('Bilinmeyen hata: $e');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          "Bilinmeyen bir hata oluştu!",
+          "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.red,
