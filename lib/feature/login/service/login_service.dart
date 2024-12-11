@@ -8,25 +8,21 @@ void logIn(
   BuildContext context,
 ) async {
   try {
-    // Kullanıcı giriş yapıyor
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: mailController.text.trim(),
       password: passwordController.text.trim(),
     );
 
-    // Başarılı giriş sonrası ana sayfaya yönlendirme
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+      MaterialPageRoute(builder: (context) => const HomePage()),
     );
 
-    // UID'yi konsola yazdır
     debugPrint('Giriş yapan kullanıcı UID: ${userCredential.user?.uid}');
   } on FirebaseAuthException catch (e) {
     debugPrint('Firebase Hata Kodu: ${e.code}');
 
-    // Firebase hatalarına uygun Türkçe mesajlar
     String errorMessage;
     if (e.code == 'user-not-found') {
       errorMessage = "Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.";
@@ -43,7 +39,6 @@ void logIn(
       errorMessage = "Kullanıcı bulunamadı.";
     }
 
-    // Hata mesajını kullanıcıya göster
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -54,7 +49,6 @@ void logIn(
       ),
     );
   } catch (e) {
-    // Genel hatalar
     debugPrint('Bilinmeyen hata: $e');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

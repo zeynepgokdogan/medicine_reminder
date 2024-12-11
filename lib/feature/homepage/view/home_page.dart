@@ -29,17 +29,15 @@ class _HomePageState extends State<HomePage> {
     final viewModel = Provider.of<HomeViewmodel>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.green,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        backgroundColor: AppColors.primaryColor,
+        title: const Text(
+          "Home Page",
+          style: TextStyle(color: Colors.white),
         ),
-        title: const Text("Home Page"),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
+            color: Colors.white,
             onPressed: () {
               viewModel.signOut(context);
             },

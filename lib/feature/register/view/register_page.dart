@@ -27,7 +27,6 @@ class RegisterPage extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Form(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 100),
                   Text(

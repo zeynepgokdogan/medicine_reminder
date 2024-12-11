@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 CustomTextField(
                   controller: mailController,
                   hintText: 'E-posta',
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Şifre',
                   obscureText: true,
                 ),
-                SizedBox(height: size.height * 0.01),
+                SizedBox(height: 40),
                 CustomButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
