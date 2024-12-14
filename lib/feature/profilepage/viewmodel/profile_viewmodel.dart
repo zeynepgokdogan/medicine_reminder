@@ -9,9 +9,11 @@ import 'package:medicine_reminder/feature/profilepage/service/profile_service.da
 class ProfileViewmodel extends ChangeNotifier {
   final ProfileService _profileService = ProfileService();
   String? _name;
+  String? _surname;
   bool _isLoading = true;
 
   String? get name => _name;
+  String? get surname => _surname;
   bool get isLoading => _isLoading;
 
   Future<void> fetchProfileModel(String userId) async {
@@ -21,6 +23,7 @@ class ProfileViewmodel extends ChangeNotifier {
       ProfileModel profileModel = await _profileService.getProfileModel(userId);
 
       _name = profileModel.name;
+      _surname = profileModel.surname;
     } catch (e) {
       debugPrint('Error fetching profile: $e');
     } finally {

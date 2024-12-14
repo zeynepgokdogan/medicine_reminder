@@ -12,6 +12,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  late double screenHeight;
+  late double screenWidth;
+
   @override
   void initState() {
     super.initState();
@@ -26,53 +29,62 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     final viewModel = Provider.of<ProfileViewmodel>(context);
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            color: AppColors.primaryColor,
+            iconSize: 35,
+            color: AppColors.secondaryColor,
             onPressed: () {
               viewModel.signOut(context);
             },
           ),
         ],
       ),
-      body: Center(
-        child: Consumer<ProfileViewmodel>(
-          builder: (context, viewModel, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/images/zeynep.jpg',
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Text(
-                      viewModel.name != null
-                          ? 'Welcome ${viewModel.name}'
-                          : 'Welcome !',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+      body: Consumer<ProfileViewmodel>(
+        builder: (context, viewModel, child) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: screenHeight * 0.01,
+              ),
+              Image.asset(
+                'assets/images/background.jpg',
+                fit: BoxFit.fitHeight,
+                height: screenHeight * 0.3,
+              ),
+              SizedBox(
+                height: screenHeight * 0.18,
+              ),
+              const Text(
+                'HOŞ GELDİN! ',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.secondaryColor,
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+              Text(
+                viewModel.name != null
+                    ? '${viewModel.name} ${viewModel.surname}'
+                    : '-',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.secondaryColor,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

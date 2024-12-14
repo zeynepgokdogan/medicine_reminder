@@ -34,7 +34,7 @@ class RegisterPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 40,
-                          color: AppColors.secondaryColor,
+                          color: Colors.black,
                         ),
                     textAlign: TextAlign.center,
                   ),

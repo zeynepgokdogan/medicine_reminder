@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/homepage/view/home_page.dart';
+import 'package:medicine_reminder/feature/profilepage/view/medicine_page.dart';
 import 'package:medicine_reminder/feature/profilepage/view/profile_page.dart';
 
 class CustomNavigationBar extends StatefulWidget {
@@ -14,7 +14,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   int _pageIndex = 1;
 
   final _pages = [
-    const HomePage(), 
+    const MedicinePage(), 
     const ProfilePage(),
   ];
 
@@ -37,12 +37,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 30),
-            label: 'Home',
+            icon: Icon(Icons.medical_services_rounded, size: 40),
+            label: 'İLAÇLAR',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 30),
-            label: 'Profile',
+            icon: Icon(Icons.person, size: 40),
+            label: 'PROFİL',
           ),
         ],
       ),

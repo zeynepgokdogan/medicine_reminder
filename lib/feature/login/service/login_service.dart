@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:medicine_reminder/feature/homepage/view/home_page.dart';
+import 'package:medicine_reminder/core/navigation/custom_navigation_bar.dart';
 
 void logIn(
   TextEditingController mailController,
@@ -16,7 +16,7 @@ void logIn(
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => const CustomNavigationBar()),
     );
 
     debugPrint('Giriş yapan kullanıcı UID: ${userCredential.user?.uid}');

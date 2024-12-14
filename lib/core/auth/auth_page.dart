@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/core/navigation/custom_navigation_bar.dart';
-import 'package:medicine_reminder/feature/homepage/view/home_page.dart';
 import 'package:medicine_reminder/feature/login/view/login_page.dart';
-import 'package:medicine_reminder/feature/profilepage/view/profile_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
