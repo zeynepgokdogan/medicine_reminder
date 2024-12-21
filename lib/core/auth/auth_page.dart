@@ -21,7 +21,7 @@ class AuthPage extends StatelessWidget {
 
             if (userId != null) {
               debugPrint('User ID: $userId');
-              return CustomNavigationBar();
+              return const CustomNavigationBar();
             } else {
               return const Center(child: Text('Kullanıcı ID alınamadı!'));
             }

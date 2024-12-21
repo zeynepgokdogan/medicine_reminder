@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:medicine_reminder/feature/register/viewmodel/register_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +13,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      builder: (context, child) {
+        return const MyApp();
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,12 +33,15 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
+                ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
+                        ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
+        
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.grey,
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppColors.white,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             titleTextStyle: TextStyle(

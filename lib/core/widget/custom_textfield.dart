@@ -29,6 +29,7 @@ class CustomTextField extends StatelessWidget {
           color: Colors.grey.shade50,
           borderRadius: BorderRadius.circular(60.0),
           border: Border.all(
+            // ignore: deprecated_member_use
             color: color.withOpacity(0.3),
             width: 3.0,
           ),

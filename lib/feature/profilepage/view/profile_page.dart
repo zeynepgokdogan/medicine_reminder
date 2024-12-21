@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,7 @@ class ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            iconSize: 35,
+            iconSize: 30.sp,
             color: AppColors.secondaryColor,
             onPressed: () {
               viewModel.signOut(context);
@@ -53,20 +54,20 @@ class ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: screenHeight * 0.01,
+                height: 15.h,
               ),
               Image.asset(
                 'assets/images/background.jpg',
                 fit: BoxFit.fitHeight,
-                height: screenHeight * 0.3,
+                height: 300.h,
               ),
               SizedBox(
-                height: screenHeight * 0.18,
+                height: 18.h,
               ),
-              const Text(
+              Text(
                 'HOŞ GELDİN! ',
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.secondaryColor,
                 ),
@@ -76,8 +77,8 @@ class ProfilePageState extends State<ProfilePage> {
                     ? '${viewModel.name} ${viewModel.surname}'
                     : '-',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 36,
+                style: TextStyle(
+                  fontSize: 30.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.secondaryColor,
                 ),

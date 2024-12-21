@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/profilepage/view/medicine_page.dart';
+import 'package:medicine_reminder/feature/medicine/view/medicine_page.dart';
 import 'package:medicine_reminder/feature/profilepage/view/profile_page.dart';
 
 class CustomNavigationBar extends StatefulWidget {
@@ -11,40 +12,75 @@ class CustomNavigationBar extends StatefulWidget {
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  int _pageIndex = 1;
+  int _selectedIndex = 0;
 
-  final _pages = [
-    const MedicinePage(), 
-    const ProfilePage(),
+  final List<Map<String, dynamic>> _navItems = [
+    {
+      'icon': Icons.medical_services_rounded,
+      'label': 'İLAÇLAR',
+      'page': const MedicinePage()
+    },
+    {'icon': Icons.person, 'label': 'PROFİL', 'page': const ProfilePage()},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: _pageIndex,
-        children: _pages,
+        index: _selectedIndex,
+        children: _navItems.map((item) => item['page'] as Widget).toList(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.primaryColor,
-        currentIndex: _pageIndex,
-        unselectedItemColor: Colors.white60, 
-        selectedItemColor: Colors.white,
-        onTap: (int index) {
-          setState(() {
-            _pageIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.medical_services_rounded, size: 40),
-            label: 'İLAÇLAR',
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.symmetric(vertical: 25.h),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 63, 121, 130),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 40),
-            label: 'PROFİL',
-          ),
-        ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(_navItems.length, (index) {
+            final isSelected = _selectedIndex == index;
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: EdgeInsets.symmetric(horizontal: 25.w, vertical:12.h),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.secondaryColor : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _navItems[index]['icon'],
+                      size: 22.sp,
+                      color: isSelected ? Colors.white : Colors.white,
+                    ),
+                    if (isSelected)
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.w),
+                        child: Text(
+                          _navItems[index]['label'],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
