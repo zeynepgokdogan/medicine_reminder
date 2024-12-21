@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
+import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 
 class CustomCard extends StatelessWidget {
   final String title;
   final IconData icon;
-  final List<IconData> items;
+  final List<MedicineModel> items;
 
   const CustomCard({
     super.key,
@@ -20,9 +23,9 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       elevation: 4,
-      color: Colors.grey,
+      color: AppColors.grey,
       child: Padding(
-        padding:  EdgeInsets.all(12.h),
+        padding: EdgeInsets.all(8.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,20 +37,50 @@ class CustomCard extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 12.sp,
+                    color: AppColors.secondaryColor,
+                    fontSize: 14.sp,
                   ),
                 ),
               ],
             ),
-            const Spacer(),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: items.map((item) {
-                return Icon(item, color: Colors.blue, size: 10.sp);
-              }).toList(),
-            ),
+            SizedBox(height: 12.h),
+            Expanded(
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final medicine = items[index];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: SvgPicture.asset(
+                          'lib/assets/pill_2.svg',
+                          // ignore: deprecated_member_use
+                          color: Colors.white,
+                          width: 20.w,
+                          height: 20.h,
+                        ),
+                      ),
+                      SizedBox(height: 1.h),
+                      Text(
+                        medicine.medicationName,
+                        style: TextStyle(
+                            fontSize: 10.sp, color: AppColors.secondaryColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

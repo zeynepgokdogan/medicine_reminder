@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
+import 'package:medicine_reminder/feature/medicine/view/add_pill/add_pill_1.dart';
 import 'package:medicine_reminder/feature/medicine/view/medicine_page.dart';
 import 'package:medicine_reminder/feature/profilepage/view/profile_page.dart';
 
@@ -12,14 +13,15 @@ class CustomNavigationBar extends StatefulWidget {
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   final List<Map<String, dynamic>> _navItems = [
     {
       'icon': Icons.medical_services_rounded,
-      'label': 'İLAÇLAR',
-      'page': const MedicinePage()
+      'label': 'İLAÇ EKLE',
+      'page': const AddPill1()
     },
+    {'icon': Icons.calendar_month, 'label': 'İLAÇ TAKVİMİ', 'page': const MedicinePage()},
     {'icon': Icons.person, 'label': 'PROFİL', 'page': const ProfilePage()},
   ];
 
@@ -35,8 +37,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 63, 121, 130),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
+            topLeft: Radius.circular(30.r),
+            topRight: Radius.circular(30.r),
           ),
         ),
         child: Row(
@@ -51,9 +53,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                padding: EdgeInsets.symmetric(horizontal: 25.w, vertical:12.h),
+                padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 12.h),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.secondaryColor : Colors.transparent,
+                  color: isSelected
+                      ? AppColors.secondaryColor
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(30.r),
                 ),
                 child: Row(

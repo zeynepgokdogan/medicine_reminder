@@ -8,13 +8,13 @@ class CustomTextField extends StatelessWidget {
   final Color color;
   final TextInputType keyboardType;
   final String? Function(String?)?
-      validator; // Dışarıdan alınan validator fonksiyonu
+      validator; // Dışarıdan alınan validator fonÆksiyonu
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.color = AppColors.primaryColor,
+    this.color = AppColors.secondaryColor,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.validator, // Opsiyonel validator parametresi
@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade50,
+          color: const Color.fromARGB(255, 241, 241, 241),
           borderRadius: BorderRadius.circular(60.0),
           border: Border.all(
             // ignore: deprecated_member_use

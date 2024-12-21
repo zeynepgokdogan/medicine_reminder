@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 
 class MedicineTextfield extends StatelessWidget {
   final String hintText;
@@ -11,7 +12,7 @@ class MedicineTextfield extends StatelessWidget {
   const MedicineTextfield({
     super.key,
     required this.hintText,
-    this.color = Colors.black,
+    this.color = AppColors.secondaryColor,
     required this.controller,
   });
 

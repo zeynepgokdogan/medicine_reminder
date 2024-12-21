@@ -23,7 +23,7 @@ class MedicineButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.black,
+          foregroundColor: AppColors.secondaryColor,
           padding:  EdgeInsets.symmetric(vertical: 12.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),

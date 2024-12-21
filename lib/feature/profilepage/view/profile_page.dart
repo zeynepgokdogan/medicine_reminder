@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
+import 'package:medicine_reminder/feature/medicine/view/pill_list.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -59,29 +60,66 @@ class ProfilePageState extends State<ProfilePage> {
               Image.asset(
                 'assets/images/background.jpg',
                 fit: BoxFit.fitHeight,
-                height: 300.h,
+                height: 200.h,
               ),
               SizedBox(
                 height: 18.h,
               ),
-              Text(
-                'HOŞ GELDİN! ',
-                style: TextStyle(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.secondaryColor,
-                ),
-              ),
-              Text(
-                viewModel.name != null
-                    ? '${viewModel.name} ${viewModel.surname}'
-                    : '-',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.secondaryColor,
-                ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hoş Geldin, ',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.secondaryColor,
+                        ),
+                      ),
+                      Text(
+                        viewModel.name != null ? '${viewModel.name}' : '-',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PillList()),
+                      );
+                    },
+                    style: ButtonStyle(
+                      fixedSize: WidgetStateProperty.all(
+                        Size(300.w, 120.h),
+                      ),
+                      backgroundColor:
+                          WidgetStateProperty.all(AppColors.secondaryColor),
+                      foregroundColor: WidgetStateProperty.all(
+                        Colors.black,
+                      ),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.h),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Kullanılan İlaçlar',
+                      style: TextStyle(fontSize: 25.sp),
+                    ),
+                  )
+                ],
               ),
             ],
           );

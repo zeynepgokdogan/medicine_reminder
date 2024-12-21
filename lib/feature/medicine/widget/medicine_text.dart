@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
+
 class MedicineText extends StatelessWidget {
   final String text;
   final double? textSize;
@@ -18,7 +20,7 @@ class MedicineText extends StatelessWidget {
       style: TextStyle(
         fontSize: textSize ?? 25.sp,
         fontWeight: FontWeight.w500,
-        color: Colors.black,
+        color: AppColors.secondaryColor,
       ),
     );
   }

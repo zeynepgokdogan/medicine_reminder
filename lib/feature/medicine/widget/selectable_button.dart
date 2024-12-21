@@ -11,7 +11,7 @@ class SelectableButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.color = AppColors.primaryColor,
+    this.color = AppColors.secondaryColor,
   });
 
   @override

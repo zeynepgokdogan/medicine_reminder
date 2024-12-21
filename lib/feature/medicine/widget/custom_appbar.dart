@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -20,13 +21,12 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         },
         icon: const Icon(
           Icons.arrow_back_ios_outlined,
-          color: Colors.black,
+          color: AppColors.secondaryColor,
         ),
       ),
       title: title != null
           ? Text(
               title!,
-              style: const TextStyle(color: Colors.black),
             )
           : null,
     );

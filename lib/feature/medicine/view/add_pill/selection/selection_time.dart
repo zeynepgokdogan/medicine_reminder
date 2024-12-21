@@ -125,7 +125,7 @@ class _SelectionTimeState extends State<SelectionTime> {
                     // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MedicinePage(),
+                      builder: (context) => const MedicinePage(),
                     ),
                   );
                 },

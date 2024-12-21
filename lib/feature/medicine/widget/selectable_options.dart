@@ -27,14 +27,14 @@ class SelectableOptions extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 6.w),
                 padding: EdgeInsets.all(16.h),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   option,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color: AppColors.red,
+                    color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
