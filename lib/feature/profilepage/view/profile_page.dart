@@ -115,7 +115,7 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     child: Text(
-                      'Kullanılan İlaçlar',
+                      'İlaç Listeniz',
                       style: TextStyle(fontSize: 25.sp),
                     ),
                   )
