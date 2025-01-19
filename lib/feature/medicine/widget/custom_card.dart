@@ -31,7 +31,7 @@ class CustomCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(icon, color: Colors.green),
+                Icon(icon, color: AppColors.secondaryColor),
                 SizedBox(width: 6.w),
                 Text(
                   title,
@@ -62,9 +62,9 @@ class CustomCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: SvgPicture.asset(
-                          'lib/assets/pill_2.svg',
+                          'assets/images/pill_2.svg',
                           // ignore: deprecated_member_use
-                          color: Colors.white,
+                          color: Colors.black38,
                           width: 20.w,
                           height: 20.h,
                         ),
@@ -73,7 +73,7 @@ class CustomCard extends StatelessWidget {
                       Text(
                         medicine.medicationName,
                         style: TextStyle(
-                            fontSize: 10.sp, color: AppColors.secondaryColor),
+                            fontSize: 10.sp, color: Colors.black),
                         textAlign: TextAlign.center,
                       ),
                     ],

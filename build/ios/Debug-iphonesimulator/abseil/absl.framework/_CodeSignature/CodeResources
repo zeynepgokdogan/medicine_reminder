@@ -1222,7 +1222,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		TtSDEQkkJBo3iq3BJWGVS+2gRdc=
+		v6HJetlVvLjQNFf8KG8OtQGFc+A=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -1230,7 +1230,7 @@
 		</data>
 		<key>xcprivacy.bundle/Info.plist</key>
 		<data>
-		jRO9j+RahAKkxqVAD7lUi8+onu4=
+		qs7UKLQCmKJYEPfzvRMFey/wl0s=
 		</data>
 		<key>xcprivacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -4598,11 +4598,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			jRO9j+RahAKkxqVAD7lUi8+onu4=
+			qs7UKLQCmKJYEPfzvRMFey/wl0s=
 			</data>
 			<key>hash2</key>
 			<data>
-			4x3FnNov0igzQJWL7YdwZ3pw9FPZUJib/d0z8LZOakk=
+			010ZtzAmJr2OGuJ02u80QZW6lCWcSTpCvGKYDHCS1pk=
 			</data>
 		</dict>
 		<key>xcprivacy.bundle/PrivacyInfo.xcprivacy</key>

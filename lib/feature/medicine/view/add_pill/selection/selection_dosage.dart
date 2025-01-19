@@ -31,7 +31,7 @@ class _SelectionDosageState extends State<SelectionDosage> {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          const MedicineText(text: 'How many times do you take it in a day?'),
+          const MedicineText(text: 'Günde kaç kez alacaksınız?'),
           SizedBox(height: 6.h),
           SizedBox(
             height: 150.h,

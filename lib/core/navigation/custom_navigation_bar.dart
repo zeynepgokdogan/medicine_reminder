@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/medicine/view/add_pill/add_pill_1.dart';
+import 'package:medicine_reminder/feature/medicine/view/add_pill_1.dart';
 import 'package:medicine_reminder/feature/medicine/view/medicine_page.dart';
 import 'package:medicine_reminder/feature/profilepage/view/profile_page.dart';
 
@@ -35,7 +35,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 25.h),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 63, 121, 130),
+          color: AppColors.primaryColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.r),
             topRight: Radius.circular(30.r),

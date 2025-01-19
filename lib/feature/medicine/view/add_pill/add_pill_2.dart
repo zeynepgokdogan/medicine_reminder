@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/frequency/every_day_page.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/frequency/every_x_days_page.dart';
@@ -24,12 +25,13 @@ class _AddPill2State extends State<AddPill2> {
     return Scaffold(
       appBar: const CustomAppbar(),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding:  EdgeInsets.all(20.h),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const MedicineText(text: 'How often do you take it?'),
+              const MedicineText(text: 'Hangi sıklıkla alacaksınız?'),
+              SizedBox(height: 20.h,),
               SelectableButton(
                 onPressed: () {
                   Provider.of<AddMedicineViewmodel>(context, listen: false)
@@ -43,7 +45,7 @@ class _AddPill2State extends State<AddPill2> {
                     ),
                   );
                 },
-                text: 'Every day',
+                text: 'Her gün',
               ),
               SelectableButton(
                 onPressed: () {
@@ -58,7 +60,7 @@ class _AddPill2State extends State<AddPill2> {
                     ),
                   );
                 },
-                text: 'Specific days of the week',
+                text: 'Haftanın Belirli Günleri',
               ),
               SelectableButton(
                 onPressed: () {
@@ -73,7 +75,7 @@ class _AddPill2State extends State<AddPill2> {
                     ),
                   );
                 },
-                text: 'Every X days',
+                text: 'Her X günde bir',
               ),
             ],
           ),

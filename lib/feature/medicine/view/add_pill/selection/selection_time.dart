@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicine_reminder/core/auth/auth_page.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/view/medicine_page.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/custom_appbar.dart';
@@ -52,7 +54,7 @@ class _SelectionTimeState extends State<SelectionTime> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               MedicineText(
-                text: 'Select the times for each dose!',
+                text: 'Her doz için bir saat seçin!',
                 textSize: 24.sp,
               ),
               const Divider(),
@@ -71,7 +73,7 @@ class _SelectionTimeState extends State<SelectionTime> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'DOSE ${index + 1}  ->',
+                            '${index + 1}. Doz ->',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 16.sp,
@@ -85,7 +87,7 @@ class _SelectionTimeState extends State<SelectionTime> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12.0),
-                              color: Colors.green.shade100,
+                              color: AppColors.secondaryColor,
                             ),
                             child: SizedBox(
                               height: 90.h,
@@ -125,11 +127,11 @@ class _SelectionTimeState extends State<SelectionTime> {
                     // ignore: use_build_context_synchronously
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MedicinePage(),
+                      builder: (context) => const AuthPage(),
                     ),
                   );
                 },
-                text: 'SAVE',
+                text: 'KAYDET',
               ),
             ],
           ),

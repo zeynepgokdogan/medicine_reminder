@@ -57,69 +57,54 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 15.h,
               ),
+              Text(
+                'Hoş Geldin 😇',
+                style: TextStyle(fontSize: 30.sp, color: Colors.black54),
+              ),
+              Text(
+                viewModel.name != null ? ' ${viewModel.name} ' : '-',
+                textAlign: TextAlign.start,
+                style: TextStyle(fontSize: 30.sp, color: Colors.black54),
+              ),
+              SizedBox(
+                height: 25.h,
+              ),
+              Divider(),
               Image.asset(
                 'assets/images/background.jpg',
                 fit: BoxFit.fitHeight,
                 height: 200.h,
               ),
+              Divider(),
               SizedBox(
-                height: 18.h,
+                height: 25.h,
               ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Hoş Geldin, ',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.secondaryColor,
-                        ),
-                      ),
-                      Text(
-                        viewModel.name != null ? '${viewModel.name}' : '-',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.red,
-                        ),
-                      ),
-                    ],
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PillList()),
+                  );
+                },
+                style: ButtonStyle(
+                  fixedSize: WidgetStateProperty.all(
+                    Size(300.w, 100.h),
                   ),
-                  SizedBox(
-                    height: 50.h,
+                  backgroundColor:
+                      WidgetStateProperty.all(AppColors.secondaryColor),
+                  foregroundColor: WidgetStateProperty.all(
+                    Colors.white,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PillList()),
-                      );
-                    },
-                    style: ButtonStyle(
-                      fixedSize: WidgetStateProperty.all(
-                        Size(300.w, 120.h),
-                      ),
-                      backgroundColor:
-                          WidgetStateProperty.all(AppColors.secondaryColor),
-                      foregroundColor: WidgetStateProperty.all(
-                        Colors.black,
-                      ),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.h),
-                        ),
-                      ),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.h),
                     ),
-                    child: Text(
-                      'İlaç Listeniz',
-                      style: TextStyle(fontSize: 25.sp),
-                    ),
-                  )
-                ],
+                  ),
+                ),
+                child: Text(
+                  'Kullandığın İlaçlar',
+                  style: TextStyle(fontSize: 25.sp),
+                ),
               ),
             ],
           );

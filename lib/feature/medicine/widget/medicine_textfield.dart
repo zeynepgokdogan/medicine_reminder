@@ -29,7 +29,7 @@ class MedicineTextfield extends StatelessWidget {
           hintText: hintText,
           hintStyle: const TextStyle(color: Colors.black45),
           filled: true,
-          fillColor: Colors.grey.shade50,
+          fillColor:AppColors.grey,
           border: OutlineInputBorder(
             borderRadius: borderRadius,
             borderSide: BorderSide(

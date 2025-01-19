@@ -11,19 +11,19 @@ class MedicineButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.color = AppColors.primaryColor,
+    this.color = AppColors.secondaryColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 150.w,
+      width: 170.w,
       height: 40.h,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: AppColors.secondaryColor,
+          foregroundColor: Colors.white,
           padding:  EdgeInsets.symmetric(vertical: 12.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),

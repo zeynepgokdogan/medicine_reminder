@@ -51,7 +51,7 @@ class _EveryDayPageState extends State<EveryDayPage> {
                     ),
                   );
                 },
-                text: 'Next',
+                text: 'İlerle',
               ),
             ],
           ),

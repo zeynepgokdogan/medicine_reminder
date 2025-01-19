@@ -31,7 +31,7 @@ class _PillListState extends State<PillList> {
           ),
         ),
         title: const Text(
-          'Medicines Used',
+          'Kullanılan İlaçlar',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -40,7 +40,7 @@ class _PillListState extends State<PillList> {
         child: items.isEmpty
             ? const Center(
                 child: Text(
-                  'No medicines found.',
+                  'Hiç ilaç eklenmemiş.',
                   style: TextStyle(fontSize: 16),
                 ),
               )

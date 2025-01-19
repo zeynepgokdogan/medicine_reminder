@@ -3,9 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:medicine_reminder/feature/register/viewmodel/register_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -13,6 +17,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await initializeDateFormatting('tr_TR', null);
+
+  Intl.defaultLocale = 'tr_TR';
+
   runApp(
     ScreenUtilInit(
       designSize: const Size(360, 690),
@@ -33,9 +42,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
-                ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
-                        ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
-        
+        ChangeNotifierProvider(create: (_) => MedicineViewModel()),
+        ChangeNotifierProvider(create: (_) => AddMedicineViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

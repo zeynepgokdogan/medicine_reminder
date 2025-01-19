@@ -27,17 +27,16 @@ class _AddPill1State extends State<AddPill1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const MedicineText(text: 'Please Enter Pill Name'),
+              const MedicineText(text: 'Lütfen ilacınızın ismini girin'),
               const SizedBox(height: 30),
               MedicineTextfield(
-                hintText: 'Type here...',
+                hintText: 'Buraya yazın...',
                 controller: _nameController,
               ),
               const SizedBox(height: 30),
@@ -46,7 +45,7 @@ class _AddPill1State extends State<AddPill1> {
                   final pillName = _nameController.text.trim();
                   if (pillName.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter a pill name')),
+                      const SnackBar(content: Text('Lütfen İlaç İsmi Girin')),
                     );
                   } else {
                     Provider.of<AddMedicineViewmodel>(context, listen: false)
@@ -60,7 +59,7 @@ class _AddPill1State extends State<AddPill1> {
                     );
                   }
                 },
-                text: 'Next',
+                text: 'İlerle',
               ),
             ],
           ),

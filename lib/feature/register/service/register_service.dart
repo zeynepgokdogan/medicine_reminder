@@ -10,19 +10,19 @@ class RegisterService {
 
   Future<String> registerUser(UserModel user, String password) async {
     try {
-      print('Registering user...');
+      print('Kullanıcı kaydoluyor...');
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: user.email,
         password: password,
       );
 
-      print('User registered with ID: ${userCredential.user!.uid}');
+      print('Kullanıcı ID ile kaydedildi: ${userCredential.user!.uid}');
       final String userId = userCredential.user!.uid;
 
       user.id = userId;
 
-      print('Writing user data to Firestore...');
+      print('Kullanıcı verileri Firestore a yazılıyor...');
       await _firestore.collection('users').doc(userId).set({
         'id': user.id,
         'firstName': user.firstName,
@@ -30,11 +30,11 @@ class RegisterService {
         'email': user.email,
       });
 
-      print('User data written to Firestore successfully.');
+      print('Kullanıcı verileri Firestore a başarıyla yazıldı.');
       return userId;
     } catch (e) {
-      print('Error during registration: $e');
-      throw Exception('Failed to register user: $e');
+      print('Kayıt sırasında hata oluştu: $e');
+      throw Exception('kullanıcı kaydedilemedi: $e');
     }
   }
 }

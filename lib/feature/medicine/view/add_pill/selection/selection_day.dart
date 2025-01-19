@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_button.dart';
@@ -24,13 +25,13 @@ class _SelectionDayState extends State<SelectionDay> {
 
   String _getDayName(int index) {
     const List<String> days = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
+      'Pazartesi',
+      'Salı',
+      'Çarşamba',
+      'Perşembe',
+      'Cuma',
+      'Cumartesi',
+      'Pazar',
     ];
     return days[index];
   }
@@ -43,7 +44,7 @@ class _SelectionDayState extends State<SelectionDay> {
         child: Column(
           children: [
             const MedicineText(
-              text: 'Select the days!',
+              text: 'Lütfen günleri seçin!',
             ),
             SizedBox(height: 10.h),
             Expanded(
@@ -66,7 +67,7 @@ class _SelectionDayState extends State<SelectionDay> {
                         ),
                         decoration: BoxDecoration(
                           color: _selectedDays[index]
-                              ? Colors.green.shade100
+                              ? AppColors.primaryColor
                               : Colors.grey.shade100,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
@@ -83,7 +84,7 @@ class _SelectionDayState extends State<SelectionDay> {
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                               color: _selectedDays[index]
-                                  ? Colors.green.shade900
+                                  ? Colors.black
                                   : Colors.grey.shade700,
                             ),
                           ),
@@ -120,7 +121,7 @@ class _SelectionDayState extends State<SelectionDay> {
                   ),
                 );
               },
-              text: 'Next',
+              text: 'İlerle',
             ),
           ],
         ),

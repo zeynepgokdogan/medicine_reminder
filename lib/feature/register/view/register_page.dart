@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/core/widget/custom_button.dart';
 import 'package:medicine_reminder/core/widget/custom_textfield.dart';
@@ -28,7 +29,7 @@ class RegisterPage extends StatelessWidget {
             child: Form(
               child: Column(
                 children: [
-                  const SizedBox(height: 100),
+                  SizedBox(height: 4.h),
                   Text(
                     'Kayıt Ol',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -38,7 +39,7 @@ class RegisterPage extends StatelessWidget {
                         ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   if (viewModel.errorMessage != null)
                     Text(
                       viewModel.errorMessage!,
@@ -122,11 +123,11 @@ class RegisterPage extends StatelessWidget {
                                 builder: (context) => const LoginPage()),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           'Giriş Yap',
                           style: TextStyle(
                             color: AppColors.primaryColor,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

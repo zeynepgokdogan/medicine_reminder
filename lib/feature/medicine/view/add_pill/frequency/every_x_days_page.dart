@@ -54,7 +54,7 @@ class _EveryXDaysPageState extends State<EveryXDaysPage> {
                 ),
               );
             },
-            text: 'Next',
+            text: 'İlerle',
           ),
         ],
       ),
