@@ -1,7 +1,7 @@
 name: medicine_reminder
 description: "A new Flutter project."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -22,6 +22,8 @@ dependencies:
   intl: ^0.20.1
   flutter_svg: ^2.0.16
   firebase_messaging: ^15.2.0
+  firebase_storage: ^12.4.0
+  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +34,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
