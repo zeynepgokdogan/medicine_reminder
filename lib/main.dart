@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
+import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
@@ -14,13 +15,21 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   await initializeDateFormatting('tr_TR', null);
-
   Intl.defaultLocale = 'tr_TR';
+
+  FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+ 
+  await firebaseMessagingService.requestPermission();
+  await firebaseMessagingService.initializeFCMToken();
+  firebaseMessagingService.listenToTokenRefresh();
+  firebaseMessagingService.listenToMessages();
+
 
   runApp(
     ScreenUtilInit(
@@ -32,6 +41,8 @@ void main() async {
     ),
   );
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
