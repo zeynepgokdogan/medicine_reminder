@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/core/navigation/custom_navigation_bar.dart';
+import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 
 void logIn(
   TextEditingController mailController,
@@ -16,12 +17,21 @@ void logIn(
       password: passwordController.text.trim(),
     );
 
+    final String? userId = userCredential.user?.uid;
+
+    if (userId != null) {
+      final FirebaseMessagingService firebaseMessagingService =
+          FirebaseMessagingService();
+      await firebaseMessagingService.initializeFCMToken(userId);
+      firebaseMessagingService.listenToTokenRefresh(userId);
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const CustomNavigationBar()),
     );
 
-    debugPrint('Giriş yapan kullanıcı UID: ${userCredential.user?.uid}');
+    debugPrint('Giriş yapan kullanıcı UID: $userId');
   } on FirebaseAuthException catch (e) {
     debugPrint('Firebase Hata Kodu: ${e.code}');
 

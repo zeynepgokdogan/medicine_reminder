@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
+import 'package:medicine_reminder/core/service/local_notification_service.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
@@ -16,20 +17,24 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Firebase Başlatma
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Tarih formatları için yerelleştirme
   await initializeDateFormatting('tr_TR', null);
   Intl.defaultLocale = 'tr_TR';
 
-  FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
- 
-  await firebaseMessagingService.requestPermission();
-  await firebaseMessagingService.initializeFCMToken();
-  firebaseMessagingService.listenToTokenRefresh();
-  firebaseMessagingService.listenToMessages();
+  // Bildirim Servislerini Başlat
+  final FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+  final LocalNotificationService localNotificationService = LocalNotificationService();
 
+  // Kullanıcı iznini isteyin
+  await firebaseMessagingService.requestPermission();
+
+  // Bildirim dinlemeye başlayın
+  firebaseMessagingService.listenToMessages();
 
   runApp(
     ScreenUtilInit(
@@ -41,6 +46,7 @@ void main() async {
     ),
   );
 }
+
 
 
 

@@ -1,4 +1,3 @@
-// medicine_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -54,6 +53,28 @@ class MedicineService {
       debugPrint('Firestore hatası: ${e.message}');
       throw Exception(
           'İlaç verisi alınırken bir hata oluştu. Lütfen tekrar deneyin.');
+    } on Exception catch (e) {
+      debugPrint('Bilinmeyen hata: $e');
+      throw Exception('Bir hata oluştu: ${e.toString()}');
+    }
+  }
+
+  Future<void> fetchUserMedicines(String userId) async {
+    try {
+      final userMedicines = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('medicines')
+          .get();
+
+      for (var doc in userMedicines.docs) {
+        debugPrint(
+            "İlaç: ${doc['medicationName']}, Alım Zamanı: ${doc['reminderTimes']}");
+      }
+    } on FirebaseException catch (e) {
+      debugPrint('Firestore hatası: ${e.message}');
+      throw Exception(
+          'İlaç verileri alınırken bir hata oluştu. Lütfen tekrar deneyin.');
     } on Exception catch (e) {
       debugPrint('Bilinmeyen hata: $e');
       throw Exception('Bir hata oluştu: ${e.toString()}');
