@@ -5,6 +5,7 @@ enum FrequencyType { daily, daysOfWeek, custom }
 enum WeekDays { monday, tuesday, wednesday, thursday, friday, saturday, sunday }
 
 class MedicineModel {
+  final String? id; // Benzersiz kimlik
   final String medicationName;
   final int dosage;
   final FrequencyType frequencyType;
@@ -14,6 +15,7 @@ class MedicineModel {
   final int? repeatIntervalInDays;
 
   MedicineModel({
+    this.id, // ID isteğe bağlı
     required this.medicationName,
     required this.dosage,
     required this.frequencyType,
@@ -25,6 +27,7 @@ class MedicineModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id, // ID'yi ekliyoruz
       'medicationName': medicationName,
       'dosage': dosage,
       'frequencyType': frequencyType.toString(),
@@ -37,8 +40,9 @@ class MedicineModel {
     };
   }
 
-  factory MedicineModel.fromMap(Map<String, dynamic> map) {
+  factory MedicineModel.fromMap(Map<String, dynamic> map, {String? id}) {
     return MedicineModel(
+      id: id, // Map'ten gelen ID'yi kullanıyoruz
       medicationName: map['medicationName'] ?? '',
       dosage: map['dosage'] ?? 0,
       frequencyType: FrequencyType.values.firstWhere(

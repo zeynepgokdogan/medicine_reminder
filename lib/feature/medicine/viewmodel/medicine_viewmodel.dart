@@ -1,4 +1,5 @@
 // medicine_viewmodel.dart
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 import 'package:medicine_reminder/feature/medicine/service/medicine_service.dart';
@@ -48,6 +49,33 @@ class MedicineViewModel extends ChangeNotifier {
         }
     }).toList();
   }
+
+Future<void> deleteMedicine(String medicineId) async {
+  try {
+    _isLoading = true;
+    notifyListeners();
+
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      debugPrint('Error: No user is logged in.');
+      return; 
+    }
+
+    final String userId = currentUser.uid;
+    await _medicineService.deleteMedicine(userId, medicineId);
+
+    _allMedicines.removeWhere((medicine) => medicine.id == medicineId);
+
+    debugPrint('Medicine successfully deleted: $medicineId');
+  } catch (e) {
+    debugPrint('Error deleting medicine: $e');
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
 
   Map<String, List<MedicineModel>> groupMedicinesByTime(
       List<MedicineModel> medicines) {

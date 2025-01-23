@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,12 @@ class _PillListState extends State<PillList> {
                     ),
                     trailing: IconButton(
                       onPressed: () {
-                        // Add delete functionality here
+                        if (medicine.id != null) {
+                          medicineViewModel.deleteMedicine(medicine
+                              .id!); // Use the `!` operator to unwrap the id
+                        } else {
+                          debugPrint('Medicine ID is null, cannot delete.');
+                        }
                       },
                       icon: const Icon(Icons.delete),
                       color: Colors.red,

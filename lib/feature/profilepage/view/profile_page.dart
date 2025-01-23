@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/medicine/view/pill_list.dart';
+import 'package:medicine_reminder/feature/profilepage/view/pill_list.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
