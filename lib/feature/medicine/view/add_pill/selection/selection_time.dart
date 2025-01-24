@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/medicine/view/medicine_page.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/custom_appbar.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_button.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_text.dart';
@@ -110,7 +109,7 @@ class _SelectionTimeState extends State<SelectionTime> {
               ),
               MedicineButton(
                 onPressed: () async {
-                  Provider.of<AddMedicineViewmodel>(context, listen: false)
+                  Provider.of<MedicineViewModel>(context, listen: false)
                       .setReminderTimes(
                     _selectedTimes
                         .map((dateTime) => TimeOfDay(
@@ -119,7 +118,7 @@ class _SelectionTimeState extends State<SelectionTime> {
                             ))
                         .toList(),
                   );
-                  await Provider.of<AddMedicineViewmodel>(context,
+                  await Provider.of<MedicineViewModel>(context,
                           listen: false)
                       .saveMedicine(context);
 

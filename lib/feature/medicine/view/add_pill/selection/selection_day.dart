@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_button.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_text.dart';
 import 'package:provider/provider.dart';
@@ -108,7 +108,7 @@ class _SelectionDayState extends State<SelectionDay> {
                         entry.key]) // İndeksleri WeekDays enum'una çevir
                     .toList();
 
-                Provider.of<AddMedicineViewmodel>(context, listen: false)
+                Provider.of<MedicineViewModel>(context, listen: false)
                     .setFrequencyDetails(
                         selectedWeekDays); // WeekDays listesi gönderiliyor
                 Navigator.push(

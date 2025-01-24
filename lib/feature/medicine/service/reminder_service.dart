@@ -16,14 +16,12 @@ class ReminderService {
 
       for (var time in reminderTimes) {
         if (time['hour'] == now.hour && time['minute'] == now.minute) {
-          // Kullanıcının token'ını alın
           final userDoc = await FirebaseFirestore.instance
               .collection('users')
               .doc(userId)
               .get();
           final token = userDoc['fcmToken'];
 
-          // Bildirimi gönder
           await FirebaseMessaging.instance.sendMessage(
             to: token,
             data: {

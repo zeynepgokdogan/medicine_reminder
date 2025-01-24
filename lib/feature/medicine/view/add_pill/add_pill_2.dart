@@ -4,7 +4,7 @@ import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/frequency/every_day_page.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/frequency/every_x_days_page.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/frequency/specific_days_page.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/custom_appbar.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_text.dart';
 import 'package:medicine_reminder/feature/medicine/widget/selectable_button.dart';
@@ -34,7 +34,7 @@ class _AddPill2State extends State<AddPill2> {
               SizedBox(height: 20.h,),
               SelectableButton(
                 onPressed: () {
-                  Provider.of<AddMedicineViewmodel>(context, listen: false)
+                  Provider.of<MedicineViewModel>(context, listen: false)
                       .setFrequencyType(FrequencyType.daily);
 
                   Navigator.push(
@@ -49,7 +49,7 @@ class _AddPill2State extends State<AddPill2> {
               ),
               SelectableButton(
                 onPressed: () {
-                  Provider.of<AddMedicineViewmodel>(context, listen: false)
+                  Provider.of<MedicineViewModel>(context, listen: false)
                       .setFrequencyType(FrequencyType.daysOfWeek);
 
                   Navigator.push(
@@ -64,7 +64,7 @@ class _AddPill2State extends State<AddPill2> {
               ),
               SelectableButton(
                 onPressed: () {
-                  Provider.of<AddMedicineViewmodel>(context, listen: false)
+                  Provider.of<MedicineViewModel>(context, listen: false)
                       .setFrequencyType(FrequencyType.custom);
 
                   Navigator.push(

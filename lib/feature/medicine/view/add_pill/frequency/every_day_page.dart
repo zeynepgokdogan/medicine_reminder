@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/selection/selection_dosage.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/selection/selection_time.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/widget/custom_appbar.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_button.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +40,7 @@ class _EveryDayPageState extends State<EveryDayPage> {
                SizedBox(height: 24.h),
               MedicineButton(
                 onPressed: () {
-                   Provider.of<AddMedicineViewmodel>(context, listen: false).setDosage(_selectedFrequency);
+                   Provider.of<MedicineViewModel>(context, listen: false).setDosage(_selectedFrequency);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

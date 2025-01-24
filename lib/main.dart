@@ -5,7 +5,6 @@ import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 import 'package:medicine_reminder/core/service/local_notification_service.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
 import 'package:medicine_reminder/feature/register/viewmodel/register_viewmodel.dart';
@@ -60,7 +59,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewmodel()),
         ChangeNotifierProvider(create: (_) => MedicineViewModel()),
-        ChangeNotifierProvider(create: (_) => AddMedicineViewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

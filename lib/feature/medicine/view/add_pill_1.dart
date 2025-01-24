@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/feature/medicine/view/add_pill/add_pill_2.dart';
-import 'package:medicine_reminder/feature/medicine/viewmodel/add_medicine_viewmodel.dart';
-import 'package:medicine_reminder/feature/medicine/widget/custom_appbar.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_button.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_text.dart';
 import 'package:medicine_reminder/feature/medicine/widget/medicine_textfield.dart';
 import 'package:provider/provider.dart';
+
+import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 
 class AddPill1 extends StatefulWidget {
   const AddPill1({
@@ -48,7 +48,7 @@ class _AddPill1State extends State<AddPill1> {
                       const SnackBar(content: Text('Lütfen İlaç İsmi Girin')),
                     );
                   } else {
-                    Provider.of<AddMedicineViewmodel>(context, listen: false)
+                    Provider.of<MedicineViewModel>(context, listen: false)
                         .setMedicationName(pillName);
 
                     Navigator.push(

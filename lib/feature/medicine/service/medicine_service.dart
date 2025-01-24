@@ -45,10 +45,12 @@ Future<void> saveMedicine(MedicineModel medicine) async {
     if (querySnapshot.docs.isNotEmpty) {
       return querySnapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        return MedicineModel.fromMap(data..['id'] = doc.id); // Include document ID
+        data['id'] = doc.id; // Firestore'dan dönen id'yi manuel ekliyoruz.
+        return MedicineModel.fromMap(data);
       }).toList();
     } else {
-      throw Exception('İlaç verisi bulunamadı.');
+      debugPrint('İlaç verisi bulunamadı.');
+      return [];
     }
   } on FirebaseException catch (e) {
     debugPrint('Firestore hatası: ${e.message}');
@@ -59,6 +61,7 @@ Future<void> saveMedicine(MedicineModel medicine) async {
     throw Exception('Bir hata oluştu: ${e.toString()}');
   }
 }
+
 
   Future<void> fetchUserMedicines(String userId) async {
     try {
