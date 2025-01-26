@@ -34,7 +34,7 @@ Future<void> saveMedicine(MedicineModel medicine) async {
 }
 
 
- Future<List<MedicineModel>> getAllMedicines(String userId) async {
+Future<List<MedicineModel>> getAllMedicines(String userId) async {
   try {
     QuerySnapshot querySnapshot = await _firestore
         .collection('users')
@@ -45,8 +45,7 @@ Future<void> saveMedicine(MedicineModel medicine) async {
     if (querySnapshot.docs.isNotEmpty) {
       return querySnapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        data['id'] = doc.id; // Firestore'dan dönen id'yi manuel ekliyoruz.
-        return MedicineModel.fromMap(data);
+        return MedicineModel.fromMap(data, id: doc.id); 
       }).toList();
     } else {
       debugPrint('İlaç verisi bulunamadı.');
@@ -61,6 +60,7 @@ Future<void> saveMedicine(MedicineModel medicine) async {
     throw Exception('Bir hata oluştu: ${e.toString()}');
   }
 }
+
 
 
   Future<void> fetchUserMedicines(String userId) async {

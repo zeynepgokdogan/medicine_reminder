@@ -69,13 +69,13 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 25.h,
               ),
-              Divider(),
+              const Divider(),
               Image.asset(
                 'assets/images/background.jpg',
                 fit: BoxFit.fitHeight,
                 height: 200.h,
               ),
-              Divider(),
+              const Divider(),
               SizedBox(
                 height: 25.h,
               ),
@@ -83,7 +83,7 @@ class ProfilePageState extends State<ProfilePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PillList()),
+                    MaterialPageRoute(builder: (context) => const PillList()),
                   );
                 },
                 style: ButtonStyle(

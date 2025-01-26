@@ -26,10 +26,9 @@ void initState() {
 
   final User? currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
-    String userId = currentUser.uid;
     final medicineViewModel =
         Provider.of<MedicineViewModel>(context, listen: false);
-    medicineViewModel.fetchAllMedicines(userId);
+    medicineViewModel.fetchUserMedicines();
   } else {
     debugPrint("Kullanıcı oturum açmamış.");
   }

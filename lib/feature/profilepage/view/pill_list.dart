@@ -1,84 +1,73 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:medicine_reminder/core/theme/colors.dart';
-import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
+import 'package:intl/intl.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class PillList extends StatefulWidget {
+class PillList extends StatelessWidget {
   const PillList({super.key});
 
   @override
-  State<PillList> createState() => _PillListState();
-}
-
-class _PillListState extends State<PillList> {
-  @override
   Widget build(BuildContext context) {
-    final medicineViewModel = Provider.of<MedicineViewModel>(context);
-    final List<MedicineModel> items = medicineViewModel.allMedicines;
+    return ChangeNotifierProvider<MedicineViewModel>(
+      create: (_) => MedicineViewModel()..fetchUserMedicines(),
+      child: Consumer<MedicineViewModel>(
+        builder: (context, viewModel, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Pill List'),
+            ),
+            body: viewModel.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : viewModel.allMedicines.isEmpty
+                    ? const Center(child: Text('Henüz bir ilaç eklenmedi.'))
+                    : ListView.builder(
+                        itemCount: viewModel.allMedicines.length,
+                        itemBuilder: (context, index) {
+                          final medicine = viewModel.allMedicines[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(medicine.medicationName),
+                              subtitle: Text(
+                                'Dozaj: ${medicine.dosage}, Başlangıç: ${DateFormat('dd MMM yyyy').format(medicine.startDate)}',
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () async {
+                                  final confirm = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Silme Onayı'),
+                                      content: const Text(
+                                          'Bu ilacı silmek istediğinizden emin misiniz?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: const Text('Hayır'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: const Text('Evet'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_outlined,
-            color: Colors.white,
-          ),
-        ),
-        title: const Text(
-          'Kullanılan İlaçlar',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: items.isEmpty
-            ? const Center(
-                child: Text(
-                  'Hiç ilaç eklenmemiş.',
-                  style: TextStyle(fontSize: 16),
-                ),
-              )
-            : ListView.separated(
-                itemCount: items.length,
-                separatorBuilder: (context, index) => const Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                ),
-                itemBuilder: (context, index) {
-                  final medicine = items[index];
-                  return ListTile(
-                    title: Row(
-                      children: [
-                        Text(
-                          '${index + 1}. ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(medicine.medicationName),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        if (medicine.id != null) {
-                          medicineViewModel.deleteMedicine(medicine
-                              .id!); 
-                              print('id: ${medicine.id}');
-
-                        } else {
-                          debugPrint('Medicine ID is null, cannot delete.');
-                        }
-                      },
-                      icon: const Icon(Icons.delete),
-                      color: Colors.red,
-                    ),
-                  );
-                },
-              ),
+                                  if (confirm == true) {
+                                    await viewModel.deleteMedicineById(
+                                        medicine.id!, context);
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+          );
+        },
       ),
     );
   }

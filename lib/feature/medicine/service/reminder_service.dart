@@ -22,6 +22,7 @@ class ReminderService {
               .get();
           final token = userDoc['fcmToken'];
 
+          // ignore: deprecated_member_use
           await FirebaseMessaging.instance.sendMessage(
             to: token,
             data: {
