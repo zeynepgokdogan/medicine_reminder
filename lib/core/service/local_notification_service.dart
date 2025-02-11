@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -13,33 +15,44 @@ class LocalNotificationService {
   void _initializeNotifications() async {
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: androidSettings);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    const DarwinInitializationSettings iOSSettings =
+        DarwinInitializationSettings();
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: androidSettings,
+      iOS: iOSSettings,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        print('Bildirim tıklandı: ${response.payload}');
+      },
+    );
+
     tz.initializeTimeZones();
   }
 
   Future<void> scheduleNotification(
       String title, String body, DateTime scheduledTime) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      0, // ID
+      0,
       title,
       body,
-      tz.TZDateTime.from(scheduledTime, tz.local), 
+      tz.TZDateTime.from(scheduledTime, tz.local),
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'channel_id', 
+          'channel_id',
           'channel_name',
-          channelDescription: 'description', 
-          importance: Importance.high, 
+          channelDescription: 'description',
+          importance: Importance.high,
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle, 
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time, 
-      
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 }

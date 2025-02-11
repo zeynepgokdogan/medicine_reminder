@@ -49,13 +49,12 @@
 	<!-- Background Modes -->
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 
 	<!-- Firebase Delegate Proxy -->
 	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
+	<true/>
 
 	<!-- App Transport Security -->
 	<key>NSAppTransportSecurity</key>

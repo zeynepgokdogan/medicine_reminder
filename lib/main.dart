@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
-import 'package:medicine_reminder/core/service/local_notification_service.dart';
+import 'package:medicine_reminder/core/service/reminder_service.dart';
 import 'package:medicine_reminder/core/theme/colors.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
 import 'package:medicine_reminder/feature/profilepage/viewmodel/profile_viewmodel.dart';
@@ -11,29 +12,37 @@ import 'package:medicine_reminder/feature/register/viewmodel/register_viewmodel.
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:workmanager/workmanager.dart';
 import 'firebase_options.dart';
+
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    final userId = inputData?['userId'];
+    if (userId != null) {
+       await ReminderService().sendMedicineReminders(inputData?['userId']);
+    }
+    return Future.value(true);
+  });
+}
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Firebase Başlatma
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Tarih formatları için yerelleştirme
   await initializeDateFormatting('tr_TR', null);
   Intl.defaultLocale = 'tr_TR';
 
-  // Bildirim Servislerini Başlat
   final FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
-  final LocalNotificationService localNotificationService = LocalNotificationService();
-
-  // Kullanıcı iznini isteyin
   await firebaseMessagingService.requestPermission();
-
-  // Bildirim dinlemeye başlayın
   firebaseMessagingService.listenToMessages();
+
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
   runApp(
     ScreenUtilInit(
@@ -46,12 +55,8 @@ void main() async {
   );
 }
 
-
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

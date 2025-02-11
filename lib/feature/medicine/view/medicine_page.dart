@@ -24,15 +24,18 @@ void initState() {
   super.initState();
   Intl.defaultLocale = 'tr_TR';
 
-  final User? currentUser = FirebaseAuth.instance.currentUser;
-  if (currentUser != null) {
-    final medicineViewModel =
-        Provider.of<MedicineViewModel>(context, listen: false);
-    medicineViewModel.fetchUserMedicines();
-  } else {
-    debugPrint("Kullanıcı oturum açmamış.");
-  }
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final medicineViewModel =
+          Provider.of<MedicineViewModel>(context, listen: false);
+      medicineViewModel.fetchUserMedicines();
+    } else {
+      debugPrint("Kullanıcı oturum açmamış.");
+    }
+  });
 }
+
 
   @override
   Widget build(BuildContext context) {
