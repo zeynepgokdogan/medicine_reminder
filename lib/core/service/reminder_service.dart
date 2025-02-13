@@ -6,64 +6,93 @@ import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 
 class ReminderService {
   Future<void> sendMedicineReminders(String userId) async {
+    // 🔥 Firebase başlatılmadıysa başlat
     if (Firebase.apps.isEmpty) {
       print("🔴 Firebase initialize ediliyor...");
       await Firebase.initializeApp();
     }
 
-
-    tz.initializeTimeZones(); // ✅ Timezone başlat
-    final now = tz.TZDateTime.from(DateTime.now(), tz.local);
-
+    // 📌 Zaman dilimlerini başlat
+    tz.initializeTimeZones();
+    final location =
+        tz.getLocation('Europe/Istanbul'); // Türkiye saat dilimini al
+    final now = tz.TZDateTime.now(location); // Şu anki zaman
     print("🕒 Şu anki zaman: ${now.hour}:${now.minute}");
 
     try {
-      final userMedicines = await FirebaseFirestore.instance
+      // Firestore'dan kullanıcının ilaçlarını çek
+      final userMedicinesSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('medicines')
           .get();
 
+      print(
+          "📌 Firestore'dan çekilen ilaç sayısı: ${userMedicinesSnapshot.docs.length}");
 
-          
-      print("📌 Firestore'dan çekilen ilaç sayısı: ${userMedicines.docs.length}");
-
-      if (userMedicines.docs.isEmpty) {
+      if (userMedicinesSnapshot.docs.isEmpty) {
         print("⚠️ Kullanıcının kayıtlı ilacı yok!");
         return;
       }
 
-      for (var doc in userMedicines.docs) {
-        final reminderTimes = doc['reminderTimes'] ?? [];
-        final medicationName = doc['medicationName'] ?? 'İlaç';
+      for (var doc in userMedicinesSnapshot.docs) {
+        final data = doc.data();
+        if (data == null) continue;
 
-        print("💊 İlaç: $medicationName, Hatırlatma Saatleri: $reminderTimes");
-
+        final List<dynamic> reminderTimesRaw = data['reminderTimes'] ?? [];
+        List<Map<String, dynamic>> reminderTimes =
+            reminderTimesRaw.map((e) => Map<String, dynamic>.from(e)).toList();
         for (var time in reminderTimes) {
-          final reminderTime = DateTime(
-              now.year, now.month, now.day, time['hour'], time['minute']);
-          final difference = now.difference(reminderTime).inMinutes;
+          if (!time.containsKey('hour') || !time.containsKey('minute')) {
+            print("⚠️ Hatalı zaman formatı: $time");
+            continue;
+          }
 
-          print("🕒 Şu anki saat: ${now.hour}:${now.minute}, Hatırlatma saati: ${reminderTime.hour}:${reminderTime.minute}, Fark: $difference dk");
+          // Şu anki zamanın saat ve dakikasını al
+          final currentHour = now.hour;
+          final currentMinute = now.minute;
 
-          if (difference.abs() <= 1) {
+          // Hatırlatma zamanının saat ve dakikasını al
+          final reminderHour = time['hour'];
+          final reminderMinute = time['minute'];
+
+          // Hatırlatma zamanının şu anki zamana göre geçip geçmediğini kontrol et
+          if (reminderHour < currentHour ||
+              (reminderHour == currentHour && reminderMinute < currentMinute)) {
+            print(
+                "⚠️ Hatırlatma saati geçmiş: ${reminderHour}:${reminderMinute}");
+            continue;
+          }
+
+          // Eğer hatırlatma saati çok yakınsa (5 dakika içinde)
+          final differenceMinutes = (reminderHour - currentHour) * 60 +
+              (reminderMinute - currentMinute);
+
+          if (differenceMinutes <= 5) {
             print("📢 Bildirim zamanı geldi! Bildirim gönderilecek!");
+
+            // Kullanıcının FCM token'ını al
             final userDoc = await FirebaseFirestore.instance
                 .collection('users')
                 .doc(userId)
                 .get();
-            final token = userDoc['fcmToken'];
+            final token = userDoc.data()?['fcmToken'];
 
-            if (token != null) {
-              print("✅ Bildirim gönderilecek: $medicationName - Kullanıcı Token: $token");
+            if (token != null && token.isNotEmpty) {
+              print("✅ Bildirim gönderilecek: Kullanıcı Token: $token");
+
+              // Bildirimi basit hale getirin
               await FirebaseMessagingService().sendNotification(
-                "İlaç Hatırlatma",
-                "$medicationName ilacını alma zamanı!",
+                "İlaç Hatırlatma", // Başlık
+                "İlaç zamanı geldi!", // Mesaj
                 token,
               );
             } else {
-              print("⚠️ Kullanıcının FCM Token'ı yok, bildirim gönderilemiyor!");
+              print(
+                  "⚠️ Kullanıcının FCM Token'ı yok, bildirim gönderilemiyor!");
             }
+          } else {
+            print("⏳ Hatırlatma saati için çok zaman var.");
           }
         }
       }

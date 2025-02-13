@@ -18,6 +18,7 @@ import 'firebase_options.dart';
 void callbackDispatcher() {
   print("🚀 WorkManager CALLBACK ÇALIŞTI!");
   tz.initializeTimeZones();
+
   Workmanager().executeTask((task, inputData) async {
     print("✅ WorkManager görevi BAŞLADI: $task");
 
@@ -72,12 +73,12 @@ void main() async {
   );
   print("📝 WorkManager Görev Kaydı Yapıldı.");
 
- await Workmanager().registerOneOffTask(
-  "testTask",
-  "medicineReminderTask",
-  initialDelay: Duration(seconds: 10), // ⏳ 10 saniye bekletiyoruz
-  inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
-);
+  await Workmanager().registerOneOffTask(
+    "testTask",
+    "medicineReminderTask",
+    initialDelay: Duration(seconds: 10), // ⏳ 10 saniye bekletiyoruz
+    inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
+  );
 
   print("⏳ WorkManager tek seferlik görev kaydedildi.");
 
