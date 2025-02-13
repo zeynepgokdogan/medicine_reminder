@@ -159,6 +159,6 @@ void initState() {
   if (DateUtils.isSameDay(date, today)) {
     return 'Bugün, ${DateFormat('d MMMM').format(date)}';
   }
-  return DateFormat('d MMMM').format(date);
+  return DateFormat('       d MMMM       ').format(date);
 }
 }

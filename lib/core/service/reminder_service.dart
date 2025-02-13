@@ -5,57 +5,61 @@ import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class ReminderService {
-  Future<void> sendMedicineReminders(String userId) async {
-    final now = tz.TZDateTime.now(tz.local);
-    print("Şu anki zaman: ${now.hour}:${now.minute}");
+Future<void> sendMedicineReminders(String userId) async {
+  final now = tz.TZDateTime.now(tz.local);
+  print("🕒 Şu anki zaman: ${now.hour}:${now.minute}");
 
-    try {
-      final userMedicines = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('medicines')
-          .get();
+  try {
+    final userMedicines = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('medicines')
+        .get();
+        
+    print("📌 Firestore'dan çekilen ilaç sayısı: ${userMedicines.docs.length}");
 
-      for (var doc in userMedicines.docs) {
-        final reminderTimes = doc['reminderTimes'] ?? [];
-        final medicationName = doc['medicationName'] ?? 'İlaç';
+    if (userMedicines.docs.isEmpty) {
+      print("⚠️ Kullanıcının kayıtlı ilacı yok!");
+      return;
+    }
 
-        final startDateStr = doc['startDate'];
-        if (startDateStr != null) {
-          final startDate = DateTime.parse(startDateStr);
-          if (startDate.isAfter(now)) {
-            print("Bu ilaç henüz başlamadı: $medicationName");
-            continue;
-          }
-        }
+    for (var doc in userMedicines.docs) {
+      final reminderTimes = doc['reminderTimes'] ?? [];
+      final medicationName = doc['medicationName'] ?? 'İlaç';
 
-        for (var time in reminderTimes) {
-          final reminderTime = DateTime(now.year, now.month, now.day, 
-                                        time['hour'], time['minute']);
-          final difference = now.difference(reminderTime).inMinutes;
+      print("💊 İlaç: $medicationName, Hatırlatma Saatleri: $reminderTimes");
 
-          if (difference.abs() <= 1) { 
-            final userDoc = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(userId)
-                .get();
-            final token = userDoc['fcmToken'];
+      for (var time in reminderTimes) {
+        final reminderTime = DateTime(
+            now.year, now.month, now.day, time['hour'], time['minute']);
+        final difference = now.difference(reminderTime).inMinutes;
 
-            if (token != null) {
-              print("Bildirim gönderilecek token: $token");
-              await FirebaseMessagingService().sendNotification(
-                "İlaç Hatırlatma",
-                "$medicationName ilacını alma zamanı!",
-                token,
-              );
-            } else {
-              print('FCM Token bulunamadı!');
-            }
+        print("🕒 Şu anki saat: ${now.hour}:${now.minute}, Hatırlatma saati: ${reminderTime.hour}:${reminderTime.minute}, Fark: $difference dk");
+
+        if (difference.abs() <= 1) {
+          print("📢 Bildirim zamanı geldi! Bildirim gönderilecek!");
+          final userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .get();
+          final token = userDoc['fcmToken'];
+
+          if (token != null) {
+            print("✅ Bildirim gönderilecek: $medicationName - Kullanıcı Token: $token");
+            await FirebaseMessagingService().sendNotification(
+              "İlaç Hatırlatma",
+              "$medicationName ilacını alma zamanı!",
+              token,
+            );
+          } else {
+            print("⚠️ Kullanıcının FCM Token'ı yok, bildirim gönderilemiyor!");
           }
         }
       }
-    } catch (e) {
-      print("Bir hata oluştu: $e");
     }
+  } catch (e) {
+    print("🚨 Firestore'dan veri çekerken hata oluştu: $e");
   }
+}
+
 }

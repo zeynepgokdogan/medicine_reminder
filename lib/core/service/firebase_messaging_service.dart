@@ -79,6 +79,8 @@ class FirebaseMessagingService {
   }
 
 Future<void> sendNotification(String title, String body, String token) async {
+  print("🔥 Firebase Bildirim Gönderme: $title - $body - $token");
+
   final serviceAccount = await loadServiceAccount();
   final clientEmail = serviceAccount['client_email'];
   final privateKey = serviceAccount['private_key'];
@@ -108,18 +110,17 @@ Future<void> sendNotification(String title, String body, String token) async {
       body: jsonEncode(message),
     );
 
-    // Burada HTTP isteğinin durumunu kontrol ediyoruz
+    // HTTP isteğinin durumunu kontrol ediyoruz
     if (response.statusCode == 200) {
-      print('Bildirim başarıyla gönderildi.');
+      print('✅ Bildirim başarıyla gönderildi.');
     } else {
-      print('Bildirim gönderme başarısız: ${response.statusCode}');
-      print('Sunucu yanıtı: ${response.body}');
+      print('❌ Bildirim gönderme başarısız: ${response.statusCode}');
+      print('📩 Sunucu yanıtı: ${response.body}');
     }
   } catch (e) {
-    print('Bildirim gönderiminde bir hata oluştu: $e');
+    print('⚠️ Bildirim gönderiminde bir hata oluştu: $e');
   }
 }
-
   Future<String> createBearerToken(
       String clientEmail, String privateKey) async {
     final now = DateTime.now();

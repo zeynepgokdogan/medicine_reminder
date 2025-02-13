@@ -15,17 +15,31 @@ import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
 import 'firebase_options.dart';
 
-
 void callbackDispatcher() {
+  print("🚀 WorkManager CALLBACK ÇALIŞTI!");
+
   Workmanager().executeTask((task, inputData) async {
-    final userId = inputData?['userId'];
-    if (userId != null) {
-       await ReminderService().sendMedicineReminders(inputData?['userId']);
+    try {
+      print("✅ WorkManager görevi BAŞLADI: $task");
+
+      final userId = inputData?['userId'];
+      if (userId == null) {
+        print("❌ WorkManager Kullanıcı ID'sini Alamıyor!");
+        return Future.value(false);
+      }
+
+      print("📌 Kullanıcı ID: $userId, İlaç Hatırlatma Bildirimi Gönderilecek...");
+      await ReminderService().sendMedicineReminders(userId);
+
+      print("✔ WorkManager görevi başarıyla tamamlandı.");
+      return Future.value(true);
+    } catch (e, stacktrace) {
+      print("🚨 WorkManager Görevi HATA ALDI: $e");
+      print(stacktrace);
+      return Future.value(false);
     }
-    return Future.value(true);
   });
 }
-
 
 
 void main() async {
@@ -42,7 +56,16 @@ void main() async {
   await firebaseMessagingService.requestPermission();
   firebaseMessagingService.listenToMessages();
 
+  print("🚀 WorkManager Başlatılıyor...");
   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
+  print("📌 WorkManager Başlatıldı, Görev Kaydediliyor...");
+  Workmanager().registerPeriodicTask(
+    "medicineReminderTask",
+    "medicineReminderTask",
+    frequency: Duration(minutes: 15),
+    inputData: {'userId': 'Senin Kullanıcı ID’n'},
+  );
 
   runApp(
     ScreenUtilInit(

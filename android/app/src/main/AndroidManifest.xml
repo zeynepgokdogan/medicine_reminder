@@ -1,12 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- WorkManager'in yeniden başlatılmasını sağlar -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:label="medicine_reminder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:name">
         
+        <!-- Firebase ayarları -->
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -14,7 +20,7 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
 
-        <!-- WorkManagerInitializer - Meta data olarak ekle -->
+        <!-- WorkManager - Meta Data Tanımı -->
         <meta-data
             android:name="androidx.work.WorkManagerInitializer"
             tools:replace="android:name"
@@ -42,17 +48,30 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- WorkManager için Receiver Tanımı -->
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:exported="false"
+            android:enabled="true"
+            tools:replace="android:enabled">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- WorkManager için Servis Tanımlaması -->
+        <service
+            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false"
+            tools:replace="android:exported"/>
+
+        <!-- Arka Planda Çalışması İçin Foreground Service -->
+        <service
+            android:name=".core.service.ForegroundService"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="false"/>
     </application>
-
-    <!-- Required permissions -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <!-- Queries for intent -->
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.PROCESS_TEXT" />
-            <data android:mimeType="text/plain" />
-        </intent>
-    </queries>
 </manifest>
