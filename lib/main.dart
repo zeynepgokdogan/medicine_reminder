@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:medicine_reminder/core/auth/auth_page.dart';
 import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
 import 'package:medicine_reminder/core/service/reminder_service.dart';
@@ -13,24 +12,27 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'firebase_options.dart';
 
 void callbackDispatcher() {
   print("🚀 WorkManager CALLBACK ÇALIŞTI!");
-
+  tz.initializeTimeZones();
   Workmanager().executeTask((task, inputData) async {
+    print("✅ WorkManager görevi BAŞLADI: $task");
+
+    final userId = inputData?['userId'];
+    if (userId == null) {
+      print("❌ WorkManager Kullanıcı ID'sini Alamıyor!");
+      return Future.value(false);
+    }
+
+    print(
+        "📌 Kullanıcı ID: $userId, İlaç Hatırlatma Bildirimi Gönderilecek...");
+
     try {
-      print("✅ WorkManager görevi BAŞLADI: $task");
-
-      final userId = inputData?['userId'];
-      if (userId == null) {
-        print("❌ WorkManager Kullanıcı ID'sini Alamıyor!");
-        return Future.value(false);
-      }
-
-      print("📌 Kullanıcı ID: $userId, İlaç Hatırlatma Bildirimi Gönderilecek...");
+      print("🔎 ReminderService çağırılıyor...");
       await ReminderService().sendMedicineReminders(userId);
-
       print("✔ WorkManager görevi başarıyla tamamlandı.");
       return Future.value(true);
     } catch (e, stacktrace) {
@@ -41,9 +43,10 @@ void callbackDispatcher() {
   });
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones(); // ✅ Timezone başlat
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -52,20 +55,31 @@ void main() async {
   await initializeDateFormatting('tr_TR', null);
   Intl.defaultLocale = 'tr_TR';
 
-  final FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
+  final FirebaseMessagingService firebaseMessagingService =
+      FirebaseMessagingService();
   await firebaseMessagingService.requestPermission();
   firebaseMessagingService.listenToMessages();
 
   print("🚀 WorkManager Başlatılıyor...");
   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
-  print("📌 WorkManager Başlatıldı, Görev Kaydediliyor...");
-  Workmanager().registerPeriodicTask(
+  await Workmanager().registerPeriodicTask(
     "medicineReminderTask",
     "medicineReminderTask",
     frequency: Duration(minutes: 15),
-    inputData: {'userId': 'Senin Kullanıcı ID’n'},
+    initialDelay: Duration(seconds: 10),
+    inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
   );
+  print("📝 WorkManager Görev Kaydı Yapıldı.");
+
+ await Workmanager().registerOneOffTask(
+  "testTask",
+  "medicineReminderTask",
+  initialDelay: Duration(seconds: 10), // ⏳ 10 saniye bekletiyoruz
+  inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
+);
+
+  print("⏳ WorkManager tek seferlik görev kaydedildi.");
 
   runApp(
     ScreenUtilInit(
