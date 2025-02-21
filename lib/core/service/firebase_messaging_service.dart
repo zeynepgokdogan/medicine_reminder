@@ -1,23 +1,33 @@
 // ignore_for_file: avoid_print
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'local_notification_service.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:jose/jose.dart';
+import 'package:googleapis_auth/googleapis_auth.dart' as auth;
+import 'package:googleapis_auth/auth_io.dart' as auth_io;
 
 class FirebaseMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final LocalNotificationService _localNotificationService =
       LocalNotificationService();
 
-  Future<Map<String, dynamic>> loadServiceAccount() async {
+  Future<String> getOAuthToken() async {
     final jsonString =
         await rootBundle.loadString('assets/service_account.json');
-    return jsonDecode(jsonString);
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+
+    final accountCredentials = auth.ServiceAccountCredentials.fromJson(jsonMap);
+
+    final authClient = await auth_io.clientViaServiceAccount(
+      accountCredentials,
+      ['https://www.googleapis.com/auth/firebase.messaging'],
+    );
+
+    return authClient.credentials.accessToken.data;
   }
 
   Future<void> requestPermission() async {
@@ -78,70 +88,40 @@ class FirebaseMessagingService {
     }
   }
 
-Future<void> sendNotification(String title, String body, String token) async {
-  print("🔥 Firebase Bildirim Gönderme: $title - $body - $token");
+  Future<void> sendNotification(String title, String body, String token) async {
+    const String projectId = "medicinereminder-1f080";
+    const String url =
+        'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
+    final String oAuthToken = await getOAuthToken();
 
-  final serviceAccount = await loadServiceAccount();
-  final clientEmail = serviceAccount['client_email'];
-  final privateKey = serviceAccount['private_key'];
-
-  final bearerToken = await createBearerToken(clientEmail, privateKey);
-
-  final url =
-      'https://fcm.googleapis.com/v1/projects/medicineReminder-1f080/messages:send';
-
-  final message = {
-    "message": {
-      "token": token,
-      "notification": {
-        "title": title,
-        "body": body,
+    final message = {
+      "message": {
+        "token": token,
+        "notification": {
+          "title": title,
+          "body": body,
+        }
       }
-    }
-  };
+    };
 
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $bearerToken',
-      },
-      body: jsonEncode(message),
-    );
-
-    // HTTP isteğinin durumunu kontrol ediyoruz
-    if (response.statusCode == 200) {
-      print('✅ Bildirim başarıyla gönderildi.');
-    } else {
-      print('❌ Bildirim gönderme başarısız: ${response.statusCode}');
-      print('📩 Sunucu yanıtı: ${response.body}');
-    }
-  } catch (e) {
-    print('⚠️ Bildirim gönderiminde bir hata oluştu: $e');
-  }
-}
-  Future<String> createBearerToken(
-      String clientEmail, String privateKey) async {
-    final now = DateTime.now();
-    final exp = now.add(const Duration(hours: 1));
-
-    final claims = JsonWebTokenClaims.fromJson({
-      'iss': clientEmail,
-      'sub': clientEmail,
-      'aud': 'https://fcm.googleapis.com/',
-      'iat': now.millisecondsSinceEpoch ~/ 1000,
-      'exp': exp.millisecondsSinceEpoch ~/ 1000,
-    });
-
-    final builder = JsonWebSignatureBuilder()
-      ..jsonContent = claims.toJson()
-      ..addRecipient(
-        JsonWebKey.fromPem(privateKey),
-        algorithm: 'RS256',
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $oAuthToken',
+        },
+        body: jsonEncode(message),
       );
 
-    final jws = builder.build();
-    return jws.toCompactSerialization();
+      if (response.statusCode == 200) {
+        print("✅ Bildirim başarıyla gönderildi!");
+      } else {
+        print("❌ Bildirim gönderme başarısız: ${response.statusCode}");
+        print("📩 Sunucu yanıtı: ${response.body}");
+      }
+    } catch (e) {
+      print("🚨 Hata: $e");
+    }
   }
 }

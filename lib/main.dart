@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz; 
 import 'firebase_options.dart';
 
 void callbackDispatcher() {
@@ -22,14 +25,22 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     print("✅ WorkManager görevi BAŞLADI: $task");
 
-    final userId = inputData?['userId'];
+    String? userId = inputData?['userId'];
+
     if (userId == null) {
-      print("❌ WorkManager Kullanıcı ID'sini Alamıyor!");
-      return Future.value(false);
+      print("❌ WorkManager için kullanıcı ID'si bulunamadı. FirebaseAuth kontrol ediliyor...");
+
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        userId = user.uid;
+        print("📌 FirebaseAuth üzerinden Kullanıcı ID bulundu: $userId");
+      } else {
+        print("❌ FirebaseAuth ile de kullanıcı bulunamadı!");
+        return Future.value(false);
+      }
     }
 
-    print(
-        "📌 Kullanıcı ID: $userId, İlaç Hatırlatma Bildirimi Gönderilecek...");
+    print("📌 Kullanıcı ID: $userId, İlaç Hatırlatma Bildirimi Gönderilecek...");
 
     try {
       print("🔎 ReminderService çağırılıyor...");
@@ -44,54 +55,60 @@ void callbackDispatcher() {
   });
 }
 
+
+Future<void> registerBackgroundTask() async {
+  final User? user = FirebaseAuth.instance.currentUser;
+  
+  if (user == null) {
+    print("❌ Oturum açmış kullanıcı bulunamadı, WorkManager kaydedilemedi.");
+    return;
+  }
+
+  final userId = user.uid; // Firebase Authentication'dan User ID al
+  print("📝 WorkManager Görev Kaydı Yapılıyor. Kullanıcı ID: $userId");
+
+  await Workmanager().registerPeriodicTask(
+    "medicineReminderTask",
+    "medicineReminderTask",
+    frequency: const Duration(minutes: 15),
+    initialDelay: const Duration(seconds: 5), // Daha hızlı başlasın diye
+    inputData: {'userId': userId}, // WorkManager’a doğru ID gönder
+  );
+}
+
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  tz.initializeTimeZones(); // ✅ Timezone başlat
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  tz.initializeTimeZones();
+  if (!Firebase.apps.any((app) => app.name == '[DEFAULT]')) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   await initializeDateFormatting('tr_TR', null);
   Intl.defaultLocale = 'tr_TR';
 
-  final FirebaseMessagingService firebaseMessagingService =
-      FirebaseMessagingService();
+  final FirebaseMessagingService firebaseMessagingService = FirebaseMessagingService();
   await firebaseMessagingService.requestPermission();
   firebaseMessagingService.listenToMessages();
 
   print("🚀 WorkManager Başlatılıyor...");
   Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
-  await Workmanager().registerPeriodicTask(
-    "medicineReminderTask",
-    "medicineReminderTask",
-    frequency: Duration(minutes: 15),
-    initialDelay: Duration(seconds: 10),
-    inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
-  );
-  print("📝 WorkManager Görev Kaydı Yapıldı.");
+  await registerBackgroundTask();
 
-  await Workmanager().registerOneOffTask(
-    "testTask",
-    "medicineReminderTask",
-    initialDelay: Duration(seconds: 10), // ⏳ 10 saniye bekletiyoruz
-    inputData: {'userId': 'MiqxdEGdhbhYmCSwNDeo8HkZd942'},
-  );
-
-  print("⏳ WorkManager tek seferlik görev kaydedildi.");
-
-  runApp(
-    ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      builder: (context, child) {
-        return const MyApp();
-      },
-    ),
-  );
+  runApp(ScreenUtilInit(
+    designSize: const Size(360, 690),
+    minTextAdapt: true,
+    builder: (context, child) {
+      return const MyApp(); 
+    },
+  ));
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

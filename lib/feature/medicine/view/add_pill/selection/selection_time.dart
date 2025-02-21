@@ -107,6 +107,7 @@ class _SelectionTimeState extends State<SelectionTime> {
                   );
                 },
               ),
+              SizedBox(height: 40.h,),
               MedicineButton(
                 onPressed: () async {
                   Provider.of<MedicineViewModel>(context, listen: false)

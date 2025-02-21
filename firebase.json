@@ -1,1 +1,45 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"medicinereminder-1f080","appId":"1:723590759234:android:0c33c12c74f83d3eb9fedb","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"medicinereminder-1f080","appId":"1:723590759234:ios:b74d6f4814da32e2b9fedb","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"medicinereminder-1f080","configurations":{"android":"1:723590759234:android:0c33c12c74f83d3eb9fedb","ios":"1:723590759234:ios:b74d6f4814da32e2b9fedb","web":"1:723590759234:web:22a15c58138fd0f0b9fedb"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "medicinereminder-1f080",
+          "appId": "1:723590759234:android:0c33c12c74f83d3eb9fedb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "medicinereminder-1f080",
+          "appId": "1:723590759234:ios:b74d6f4814da32e2b9fedb",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "medicinereminder-1f080",
+          "configurations": {
+            "android": "1:723590759234:android:0c33c12c74f83d3eb9fedb",
+            "ios": "1:723590759234:ios:b74d6f4814da32e2b9fedb",
+            "web": "1:723590759234:web:22a15c58138fd0f0b9fedb"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [] 
+    }
+  ]
+}
