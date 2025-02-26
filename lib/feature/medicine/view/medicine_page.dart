@@ -1,6 +1,7 @@
 // medicine_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:medicine_reminder/feature/medicine/model/medicine_model.dart';
 import 'package:medicine_reminder/feature/medicine/viewmodel/medicine_viewmodel.dart';
@@ -21,8 +22,13 @@ class _MedicinePageState extends State<MedicinePage> {
 
 @override
 void initState() {
-  super.initState();
+    super.initState();
   Intl.defaultLocale = 'tr_TR';
+  
+  // Locale verisini yükle
+  initializeDateFormatting('tr_TR', null).then((_) {
+    setState(() {}); // Tarih formatlama çalışması için UI'yı güncelle
+  });
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     final User? currentUser = FirebaseAuth.instance.currentUser;

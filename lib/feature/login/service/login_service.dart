@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/core/navigation/custom_navigation_bar.dart';
-import 'package:medicine_reminder/core/service/firebase_messaging_service.dart';
+
 void logIn(
   TextEditingController mailController,
   TextEditingController passwordController,
@@ -16,23 +16,40 @@ void logIn(
       password: passwordController.text.trim(),
     );
 
-    final String? userId = userCredential.user?.uid;
-
-    if (userId != null) {
-      final FirebaseMessagingService firebaseMessagingService =
-          FirebaseMessagingService();
-      await firebaseMessagingService.initializeFCMToken(userId);
-      firebaseMessagingService.listenToTokenRefresh(userId);
-    }
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const CustomNavigationBar()),
     );
 
-    debugPrint('Giriş yapan kullanıcı UID: $userId');
+    debugPrint('Giriş yapan kullanıcı UID: ${userCredential.user?.uid}');
   } on FirebaseAuthException catch (e) {
-    handleFirebaseAuthError(e, context);
+    debugPrint('Firebase Hata Kodu: ${e.code}');
+
+    String errorMessage;
+    if (e.code == 'user-not-found') {
+      errorMessage = "Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'wrong-password') {
+      errorMessage = "Girdiğiniz şifre hatalı. Lütfen tekrar deneyin.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'invalid-email') {
+      errorMessage = "Geçersiz bir e-posta adresi girdiniz.";
+      debugPrint('Firebase Hata Kodu: ${e.code}');
+    } else if (e.code == 'user-disabled') {
+      errorMessage = "Bu kullanıcı hesabı devre dışı bırakılmış.";
+    } else {
+      errorMessage = "Kullanıcı bulunamadı.";
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errorMessage,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
   } catch (e) {
     debugPrint('Bilinmeyen hata: $e');
     ScaffoldMessenger.of(context).showSnackBar(
@@ -45,34 +62,4 @@ void logIn(
       ),
     );
   }
-}
-
-void handleFirebaseAuthError(FirebaseAuthException e, BuildContext context) {
-  String errorMessage;
-  switch (e.code) {
-    case 'user-not-found':
-      errorMessage = "Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.";
-      break;
-    case 'wrong-password':
-      errorMessage = "Girdiğiniz şifre hatalı. Lütfen tekrar deneyin.";
-      break;
-    case 'invalid-email':
-      errorMessage = "Geçersiz bir e-posta adresi girdiniz.";
-      break;
-    case 'user-disabled':
-      errorMessage = "Bu kullanıcı hesabı devre dışı bırakılmış.";
-      break;
-    default:
-      errorMessage = "Kullanıcı bulunamadı.";
-  }
-
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        errorMessage,
-        style: const TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.red,
-    ),
-  );
 }
