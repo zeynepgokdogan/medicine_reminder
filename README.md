@@ -1,3 +1,10 @@
+# İlaç Takip Uygulaması
+
+Bu proje, ilaç takibini kolaylaştırmak için geliştirilmiş bir arayüze sahiptir. Aşağıda uygulamanın farklı ekranlarını gösteren görseller iki sütun halinde sıralanmıştır.
+
+## Görseller
+
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -35,3 +42,6 @@
     </div>
 </body>
 </html>
+```
+
+Bu HTML kodunu bir tarayıcıda açarak uygulamanın arayüzünü i
