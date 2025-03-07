@@ -20,5 +20,3 @@ Bu proje, ilaç takibini kolaylaştırmak için geliştirilmiş bir arayüze sah
     <img src="https://github.com/user-attachments/assets/6bf17a62-8c27-4f0f-846f-10ebf6480705" width="45%" alt="Profil 1">
     <img src="https://github.com/user-attachments/assets/ea8284db-bf5a-4605-a5e8-5c5587bcaa99" width="45%" alt="İlaç Takvimi">
 </div>
-
-Bu README dosyasında görseller doğrudan görüntülenebilir şekilde düzenlenmiştir. Projenizi GitHub'da görüntülerken resimler yan yana düzgün bir şekilde görünecektir.
