@@ -1,4 +1,4 @@
-# İlaç Takip Uygulaması
+# İlaç Takip Uygulaması( Flutter & Dart )
 
 Bu proje, ilaç takibini kolaylaştırmak için geliştirilmiş bir arayüze sahiptir. Aşağıda uygulamanın farklı ekranlarını gösteren görseller iki sütun halinde sıralanmıştır.
 
